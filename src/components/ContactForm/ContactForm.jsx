@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Forma, Input, Label } from './ContactForm.styled';
 
-//  reforked on hoks
 export const ContactForm = ({ onSubmit }) => {
+  /**
+   * State
+   */
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
+  /**
+   * reworked Class Metods
+   */
   const handleChange = e => {
     const { name, value } = e.target;
     switch (name) {
