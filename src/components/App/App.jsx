@@ -9,7 +9,7 @@ export const App = () => {
    * State
    */
   const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) ?? contacts_BASE
+    () => JSON.parse(localStorage.getItem('contacts')) ?? contacts_BASE
   );
   const [filter, setFilter] = useState('');
   /**
