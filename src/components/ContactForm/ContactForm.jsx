@@ -1,52 +1,65 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Forma, Input, Label } from './ContactForm.styled';
 
-export class ContactForm extends Component {
-  state = { name: '', number: '' };
+//  reforked on hoks
+export const ContactForm = ({ onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = e => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+  const handleChange = e => {
+    const { name, value } = e.target;
+    console.log(name);
+    console.log(e.target.value);
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        break;
+    }
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const { name, number } = this.state;
     const id = nanoid();
-    this.props.onSubmit({ id, name, number });
-    this.setState({ name: '', number: '' });
+    onSubmit({ id, name, number });
+    setName('');
+    setNumber('');
   };
-  render() {
-    return (
-      <>
-        <Forma onSubmit={this.handleSubmit}>
-          <Label>
-            Name
-            <Input
-              type="text"
-              name="name"
-              value={this.state.name}
-              required
-              onChange={this.handleChange}
-            />
-          </Label>
-          <Label>
-            Number
-            <Input
-              type="tel"
-              name="number"
-              value={this.state.number}
-              required
-              onChange={this.handleChange}
-            />
-          </Label>
-          <button type="submit">Add contact</button>
-        </Forma>
-      </>
-    );
-  }
-}
+
+  return (
+    <>
+      <Forma onSubmit={handleSubmit}>
+        <Label>
+          Name
+          <Input
+            type="text"
+            name="name"
+            value={name}
+            required
+            onChange={handleChange}
+          />
+        </Label>
+        <Label>
+          Number
+          <Input
+            type="tel"
+            name="number"
+            value={number}
+            required
+            onChange={handleChange}
+          />
+        </Label>
+        <button type="submit">Add contact</button>
+      </Forma>
+    </>
+  );
+};
 
 ContactForm.propTypes = {
   onClick: PropTypes.func,
