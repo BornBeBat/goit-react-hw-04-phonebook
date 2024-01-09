@@ -1,3 +1,4 @@
-export * from './ContactList/ContactList.jsx';
-export * from './Filter/Filter.jsx';
-export * from './ContactForm/ContactForm.jsx';
+export * from './ContactList';
+export * from './Filter';
+export * from './ContactForm';
+export * from './App/App.jsx';

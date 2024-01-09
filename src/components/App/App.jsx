@@ -1,32 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { ContactForm, ContactList, Filter } from 'components';
 import { AppContainer, MainTitle, SecondaryTitle } from './App.styled';
-import { contacts_BASE } from 'utils';
+import { contacts_BASE, filterArray, useLocalStorage } from 'utils';
 
 export const App = () => {
-  /**
-   * State
-   */
-  const [contacts, setContacts] = useState(
-    () => JSON.parse(localStorage.getItem('contacts')) ?? contacts_BASE
-  );
+  const [contacts, setContacts] = useLocalStorage('contacts', contacts_BASE);
   const [filter, setFilter] = useState('');
-  /**
-   * Effect
-   */
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-  /**
-   * reworked Class Metods
-   */
-  const handleFormSubmit = data => {
-    const isExist = contacts.find(
-      elem => elem.name.toLowerCase() === data.name.toLowerCase()
-    );
+
+  const handleSubmit = data => {
+    const { name } = data;
+    const isExist = contacts.find(elem => elem.name.toLowerCase() === name);
     if (isExist) {
-      alert(`${data.name} is already in contacts`);
+      alert(`${name} is already in contacts`);
       return;
     }
     setContacts(prev => [...prev, data]);
@@ -37,12 +23,6 @@ export const App = () => {
     setFilter(value);
   };
 
-  const filterContacts = () => {
-    return contacts.filter(elem =>
-      elem.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
   const hendleDeleteContact = id => {
     setContacts(prev => prev.filter(elem => elem.id !== id));
   };
@@ -50,10 +30,13 @@ export const App = () => {
   return (
     <AppContainer>
       <MainTitle>Phonebook</MainTitle>
-      <ContactForm onSubmit={handleFormSubmit} />
+      <ContactForm onSubmit={handleSubmit} />
       <SecondaryTitle>Contacts</SecondaryTitle>
       <Filter onChange={updateFilter} />
-      <ContactList contacts={filterContacts()} onClick={hendleDeleteContact} />
+      <ContactList
+        contacts={filterArray(contacts, filter)}
+        onClick={hendleDeleteContact}
+      />
     </AppContainer>
   );
 };
