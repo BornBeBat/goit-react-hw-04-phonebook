@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { ContactForm, ContactList, Filter } from 'components';
 import { AppContainer, MainTitle, SecondaryTitle } from './App.styled';
+import { ContactForm, ContactList, Filter } from 'components';
 import { contacts_BASE, filterArray, useLocalStorage } from 'utils';
 
 export const App = () => {
